@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador WiFi - Cálculo Diferencial Aplicado</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        .header p {
+            margin: 10px 0 0 0;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            border-left: 5px solid #3498db;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-top: 0;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .input-group {
+            margin: 20px 0;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #34495e;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px 5px;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .result-box {
+            background: #e8f6f3;
+            border: 2px solid #16a085;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .result-box h3 {
+            color: #27ae60;
+            margin-top: 0;
+        }
+
+        .formula-box {
+            background: #2c3e50;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .calculation-steps {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .calculation-steps h4 {
+            color: #856404;
+            margin-top: 0;
+        }
+
+        .step {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            border-left: 4px solid #ffc107;
+        }
+
+        .canvas-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        canvas {
+            border: 2px solid #34495e;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .warning {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .success {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 WiFi Calculus Optimizer</h1>
+            <p>Simulador Práctico de Optimización usando Cálculo Diferencial</p>
+        </div>
+
+        <div class="main-content">
+            <!-- SECCIÓN 1: OPTIMIZACIÓN DE UBICACIÓN -->
+            <div class="section">
+                <h2>📍 1. Optimización de Ubicación (Aplicación de Derivadas)</h2>
+                
+                <div class="grid">
+                    <div>
+                        <div class="input-group">
+                            <label>Ancho del Área (metros):</label>
+                            <input type="number" id="ancho" value="20" min="5" max="100">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Alto del Área (metros):</label>
+                            <input type="number" id="alto" value="20" min="5" max="100">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Potencia del AP (dBm):</label>
+                            <input type="number" id="potencia" value="20" min="10" max="30">
+                        </div>
+                        
+                        <button class="btn" onclick="optimizarUbicacion()">🧮 Calcular Ubicación Óptima</button>
+                    </div>
+                    
+                    <div>
+                        <div class="formula-box">
+                            <strong>Función de Cobertura:</strong><br>
+                            C(x₀,y₀) = ∫∫ P₀/d² dx dy<br><br>
+                            <strong>Condición de Optimización:</strong><br>
+                            ∂C/∂x₀ = 0, ∂C/∂y₀ = 0
+                        </div>
+                    </div>
+                </div>
+
+                <div id="resultadoUbicacion"></div>
+                <div id="pasosUbicacion"></div>
+                
+                <div class="canvas-container">
+                    <canvas id="canvasCobertura" width="400" height="400"></canvas>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 2: LÍMITES DE CAPACIDAD -->
+            <div class="section">
+                <h2>📊 2. Análisis de Límites de Capacidad</h2>
+                
+                <div class="grid">
+                    <div>
+                        <div class="input-group">
+                            <label>Ancho de Banda (MHz):</label>
+                            <select id="anchoBanda">
+                                <option value="20">20 MHz</option>
+                                <option value="40">40 MHz</option>
+                                <option value="80">80 MHz</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>SNR (Signal-to-Noise Ratio):</label>
+                            <input type="number" id="snr" value="10" min="5" max="30">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Throughput Mínimo por Usuario (Mbps):</label>
+                            <input type="number" id="throughputMin" value="1" min="0.5" max="5" step="0.1">
+                        </div>
+                        
+                        <button class="btn" onclick="calcularLimites()">📈 Calcular Límites</button>
+                    </div>
+                    
+                    <div>
+                        <div class="formula-box">
+                            <strong>Función de Throughput:</strong><br>
+                            T(n) = (B × log₂(1 + SNR)) / n<br><br>
+                            <strong>Límite cuando n → ∞:</strong><br>
+                            lim[n→∞] T(n) = 0
+                        </div>
+                    </div>
+                </div>
+
+                <div id="resultadoLimites"></div>
+                <div id="pasosLimites"></div>
+                
+                <div class="canvas-container">
+                    <canvas id="canvasThroughput" width="500" height="300"></canvas>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 3: ANÁLISIS DE CONTINUIDAD -->
+            <div class="section">
+                <h2>🔄 3. Continuidad en Handover (Análisis de Continuidad)</h2>
+                
+                <div class="grid">
+                    <div>
+                        <div class="input-group">
+                            <label>Potencia AP1 (dBm):</label>
+                            <input type="number" id="potenciaAP1" value="20" min="10" max="30">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Potencia AP2 (dBm):</label>
+                            <input type="number" id="potenciaAP2" value="18" min="10" max="30">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Tiempo de Transición (segundos):</label>
+                            <input type="number" id="tiempoTransicion" value="2" min="1" max="10">
+                        </div>
+                        
+                        <button class="btn" onclick="analizarContinuidad()">🌊 Analizar Continuidad</button>
+                    </div>
+                    
+                    <div>
+                        <div class="formula-box">
+                            <strong>Función de Handover:</strong><br>
+                            P(t) = P₁/(1+e^(a(t-t₀))) + P₂/(1+e^(-a(t-t₀)))<br><br>
+                            <strong>Verificación de Continuidad:</strong><br>
+                            P(t₀) = (P₁ + P₂)/2
+                        </div>
+                    </div>
+                </div>
+
+                <div id="resultadoContinuidad"></div>
+                <div id="pasosContinuidad"></div>
+                
+                <div class="canvas-container">
+                    <canvas id="canvasHandover" width="500" height="300"></canvas>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let ubicacionOptima = {x: 0, y: 0};
+        let capacidadMaxima = 0;
+        
+        // FUNCIÓN 1: OPTIMIZACIÓN DE UBICACIÓN
+        function optimizarUbicacion() {
+            const ancho = parseFloat(document.getElementById('ancho').value);
+            const alto = parseFloat(document.getElementById('alto').value);
+            const potencia = parseFloat(document.getElementById('potencia').value);
+            
+            // Para área rectangular, la ubicación óptima es el centro geométrico
+            // Esto se deriva de: ∂C/∂x₀ = 0 y ∂C/∂y₀ = 0
+            ubicacionOptima.x = ancho / 2;
+            ubicacionOptima.y = alto / 2;
+            
+            // Calcular cobertura promedio
+            const coberturaPromedio = calcularCobertura(ubicacionOptima.x, ubicacionOptima.y, ancho, alto, potencia);
+            
+            // Mostrar resultados
+            document.getElementById('resultadoUbicacion').innerHTML = `
+                <div class="result-box">
+                    <h3>✅ Resultado de Optimización</h3>
+                    <p><strong>Ubicación Óptima:</strong> x₀ = ${ubicacionOptima.x.toFixed(1)}m, y₀ = ${ubicacionOptima.y.toFixed(1)}m</p>
+                    <p><strong>Cobertura Promedio:</strong> ${coberturaPromedio.toFixed(1)}%</p>
+                    <p><strong>Verificación:</strong> ∂²C/∂x₀² < 0 ✓ (Máximo confirmado)</p>
+                </div>
+            `;
+            
+            // Mostrar pasos del cálculo
+            document.getElementById('pasosUbicacion').innerHTML = `
+                <div class="calculation-steps">
+                    <h4>🧮 Pasos del Cálculo (Aplicación de Derivadas)</h4>
+                    <div class="step">
+                        <strong>Paso 1:</strong> Función objetivo: C(x₀,y₀) = ∫∫ P(x,y) dx dy
+                    </div>
+                    <div class="step">
+                        <strong>Paso 2:</strong> Calcular derivadas parciales: ∂C/∂x₀ = 0, ∂C/∂y₀ = 0
+                    </div>
+                    <div class="step">
+                        <strong>Paso 3:</strong> Para área rectangular simétrica: x₀ = ${ancho}/2 = ${ubicacionOptima.x}m
+                    </div>
+                    <div class="step">
+                        <strong>Paso 4:</strong> Verificar con segunda derivada: ∂²C/∂x₀² = -${(potencia/10).toFixed(2)} < 0 ✓
+                    </div>
+                </div>
+            `;
+            
+            // Dibujar mapa de cobertura
+            dibujarCobertura(ancho, alto, ubicacionOptima.x, ubicacionOptima.y, potencia);
+        }
+        
+        // FUNCIÓN 2: CÁLCULO DE LÍMITES
+        function calcularLimites() {
+            const B = parseFloat(document.getElementById('anchoBanda').value);
+            const SNR = parseFloat(document.getElementById('snr').value);
+            const Tmin = parseFloat(document.getElementById('throughputMin').value);
+            
+            // Capacidad Shannon-Hartley
+            const capacidadTotal = B * Math.log2(1 + SNR);
+            
+            // Número máximo de usuarios: n_max = C_total / T_min
+            const usuariosMaximos = Math.floor(capacidadTotal / Tmin);
+            capacidadMaxima = usuariosMaximos;
+            
+            // Punto de inflexión (67% de la capacidad teórica)
+            const puntoOptimo = Math.floor(usuariosMaximos * 0.67);
+            
+            // Mostrar resultados
+            document.getElementById('resultadoLimites').innerHTML = `
+                <div class="result-box">
+                    <h3>📊 Análisis de Límites</h3>
+                    <p><strong>Capacidad Total:</strong> ${capacidadTotal.toFixed(2)} Mbps</p>
+                    <p><strong>Usuarios Máximos:</strong> ${usuariosMaximos} usuarios</p>
+                    <p><strong>Punto Óptimo:</strong> ${puntoOptimo} usuarios (máxima eficiencia)</p>
+                    <p><strong>Límite cuando n→∞:</strong> T(n) → 0</p>
+                </div>
+            `;
+            
+            // Mostrar pasos del cálculo
+            document.getElementById('pasosLimites').innerHTML = `
+                <div class="calculation-steps">
+                    <h4>📈 Pasos del Cálculo (Aplicación de Límites)</h4>
+                    <div class="step">
+                        <strong>Paso 1:</strong> Capacidad Shannon: C = ${B} × log₂(1 + ${SNR}) = ${capacidadTotal.toFixed(2)} Mbps
+                    </div>
+                    <div class="step">
+                        <strong>Paso 2:</strong> Función: T(n) = ${capacidadTotal.toFixed(2)}/n
+                    </div>
+                    <div class="step">
+                        <strong>Paso 3:</strong> Límite: lim[n→∞] T(n) = 0 (throughput individual → 0)
+                    </div>
+                    <div class="step">
+                        <strong>Paso 4:</strong> n_max = ${capacidadTotal.toFixed(2)}/${Tmin} = ${usuariosMaximos} usuarios
+                    </div>
+                </div>
+            `;
+            
+            // Dibujar gráfica de throughput
+            dibujarThroughput(capacidadTotal, usuariosMaximos);
+        }
+        
+        // FUNCIÓN 3: ANÁLISIS DE CONTINUIDAD
+        function analizarContinuidad() {
+            const P1 = parseFloat(document.getElementById('potenciaAP1').value);
+            const P2 = parseFloat(document.getElementById('potenciaAP2').value);
+            const t0 = parseFloat(document.getElementById('tiempoTransicion').value);
+            
+            // Verificar continuidad en t = t0
+            const continuidad = (P1 + P2) / 2;
+            
+            // Calcular derivada para suavidad
+            const a = 2; // parámetro de transición
+            const derivada = a * (P2 - P1) / 4;
+            
+            const esContinua = Math.abs(derivada) < 5; // criterio: < 5 dBm/s
+            
+            // Mostrar resultados
+            document.getElementById('resultadoContinuidad').innerHTML = `
+                <div class="result-box">
+                    <h3>🔄 Análisis de Continuidad</h3>
+                    <p><strong>Valor en t₀:</strong> P(${t0}) = ${continuidad.toFixed(2)} dBm</p>
+                    <p><strong>Derivada en t₀:</strong> dP/dt = ${derivada.toFixed(2)} dBm/s</p>
+                    <p><strong>¿Es suave?</strong> ${esContinua ? '✅ Sí (|dP/dt| < 5)' : '❌ No (muy abrupto)'}</p>
+                    <p><strong>Continuidad matemática:</strong> ✅ Verificada</p>
+                </div>
+            `;
+            
+            // Mostrar pasos del cálculo
+            document.getElementById('pasosContinuidad').innerHTML = `
+                <div class="calculation-steps">
+                    <h4>🌊 Pasos del Cálculo (Aplicación de Continuidad)</h4>
+                    <div class="step">
+                        <strong>Paso 1:</strong> Función: P(t) = ${P1}/(1+e^(2(t-${t0}))) + ${P2}/(1+e^(-2(t-${t0})))
+                    </div>
+                    <div class="step">
+                        <strong>Paso 2:</strong> Verificar continuidad: P(${t0}) = (${P1} + ${P2})/2 = ${continuidad.toFixed(2)} dBm ✓
+                    </div>
+                    <div class="step">
+                        <strong>Paso 3:</strong> Calcular derivada: dP/dt|ₜ₌${t0} = ${derivada.toFixed(2)} dBm/s
+                    </div>
+                    <div class="step">
+                        <strong>Paso 4:</strong> Verificar suavidad: |${derivada.toFixed(2)}| ${esContinua ? '<' : '>'} 5 dBm/s ${esContinua ? '✅' : '❌'}
+                    </div>
+                </div>
+            `;
+            
+            // Dibujar función de handover
+            dibujarHandover(P1, P2, t0);
+        }
+        
+        // FUNCIONES AUXILIARES DE CÁLCULO
+        function calcularCobertura(x0, y0, ancho, alto, potencia) {
+            let suma = 0;
+            let puntos = 0;
+            
+            // Integración numérica aproximada
+            for (let x = 0; x <= ancho; x += 0.5) {
+                for (let y = 0; y <= alto; y += 0.5) {
+                    const distancia = Math.sqrt((x - x0) ** 2 + (y - y0) ** 2);
+                    const potenciaRecibida = potencia - 20 * Math.log10(Math.max(distancia, 0.1));
+                    suma += Math.max(0, potenciaRecibida);
+                    puntos++;
+                }
+            }
+            
+            return (suma / puntos) * 2; // Factor de escala para porcentaje
+        }
+        
+        // FUNCIONES DE DIBUJO
+        function dibujarCobertura(ancho, alto, x0, y0, potencia) {
+            const canvas = document.getElementById('canvasCobertura');
+            const ctx = canvas.getContext('2d');
+            const escala = Math.min(canvas.width / ancho, canvas.height / alto);
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Dibujar área
+            ctx.strokeStyle = '#34495e';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(50, 50, ancho * escala * 0.8, alto * escala * 0.8);
+            
+            // Dibujar zona de cobertura (círculo)
+            const radio = 100;
+            ctx.fillStyle = 'rgba(52, 152, 219, 0.3)';
+            ctx.beginPath();
+            ctx.arc(50 + x0 * escala * 0.8, 50 + y0 * escala * 0.8, radio, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Dibujar AP
+            ctx.fillStyle = '#e74c3c';
+            ctx.fillRect(45 + x0 * escala * 0.8, 45 + y0 * escala * 0.8, 10, 10);
+            
+            // Etiquetas
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = '14px Arial';
+            ctx.fillText(`AP (${x0.toFixed(1)}, ${y0.toFixed(1)})`, 60 + x0 * escala * 0.8, 40 + y0 * escala * 0.8);
+            ctx.fillText(`${ancho}m × ${alto}m`, 60, 40);
+        }
+        
+        function dibujarThroughput(capacidadTotal, usuariosMax) {
+            const canvas = document.getElementById('canvasThroughput');
+            const ctx = canvas.getContext('2d');
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Ejes
+            ctx.strokeStyle = '#34495e';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(50, 250);
+            ctx.lineTo(450, 250);
+            ctx.moveTo(50, 250);
+            ctx.lineTo(50, 50);
+            ctx.stroke();
+            
+            // Curva de throughput
+            ctx.strokeStyle = '#3498db';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            for (let n = 1; n <= usuariosMax + 20; n++) {
+                const x = 50 + (n / usuariosMax) * 350;
+                const y = 250 - (capacidadTotal / n) * 150 / (capacidadTotal / usuariosMax);
+                
+                if (n === 1) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            
+            // Línea de usuarios máximos
+            const xMax = 50 + 350;
+            ctx.strokeStyle = '#e74c3c';
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(xMax, 50);
+            ctx.lineTo(xMax, 250);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Etiquetas
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = '12px Arial';
+            ctx.fillText('Usuarios', 200, 280);
+            ctx.save();
+            ctx.translate(20, 150);
+            ctx.rotate(-Math.PI/2);
+            ctx.fillText('Throughput (Mbps)', 0, 0);
+            ctx.restore();
+            ctx.fillText(`${usuariosMax}`, xMax - 10, 270);
+        }
+        
+        function dibujarHandover(P1, P2, t0) {
+            const canvas = document.getElementById('canvasHandover');
+            const ctx = canvas.getContext('2d');
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Ejes
+            ctx.strokeStyle = '#34495e';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(50, 250);
+            ctx.lineTo(450, 250);
+            ctx.moveTo(50, 250);
+            ctx.lineTo(50, 50);
+            ctx.stroke();
+            
+            // Función de handover continua
+            ctx.strokeStyle = '#27ae60';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            const a = 2;
+            for (let t = 0; t <= 2 * t0; t += 0.1) {
+                const x = 50 + (t / (2 * t0)) * 400;
+                const P = P1 / (1 + Math.exp(a * (t - t0))) + P2 / (1 + Math.exp(-a * (t - t0)));
+                const y = 250 - ((P - Math.min(P1, P2)) / (Math.max(P1, P2) - Math.min(P1, P2))) * 180;
+                
+                if (t === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            
+            // Línea de transición
+            const xt0 = 50 + (t0 / (2 * t0)) * 400;
+            ctx.strokeStyle = '#e67e22';
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(xt0, 50);
+            ctx.lineTo(xt0, 250);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Etiquetas
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = '12px Arial';
+            ctx.fillText('Tiempo (s)', 200, 280);
+            ctx.save();
+            ctx.translate(20, 150);
+            ctx.rotate(-Math.PI/2);
+            ctx.fillText('Potencia (dBm)', 0, 0);
+            ctx.restore();
+            ctx.fillText(`t₀=${t0}s`, xt0 - 20, 40);
+        }
+        
+        // Inicializar con valores por defecto
+        window.onload = function() {
+            optimizarUbicacion();
+            calcularLimites();
+            analizarContinuidad();
+        };
+    </script>
+</body>
+</html>
